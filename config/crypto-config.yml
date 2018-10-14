@@ -1,21 +1,9 @@
-# ---------------------------------------------------------------------------
-# "OrdererOrgs" - Definition of organizations managing orderer nodes
-# ---------------------------------------------------------------------------
 OrdererOrgs:
-# ---------------------------------------------------------------------------
-# Orderer
-# ---------------------------------------------------------------------------
-- Name: Orderer1
-  Domain: org1-orderer1.first-app.com
-  # ---------------------------------------------------------------------------
-  # "Specs" - See PeerOrgs below for complete description
-  # ---------------------------------------------------------------------------
+- Name: Orderer
+  Domain: first-app.com
   Specs:
-  - Hostname: orderer1
+  - Hostname: orderer
 
-# ---------------------------------------------------------------------------
-# "PeerOrgs" - Definition of organizations managing peer nodes
-# ---------------------------------------------------------------------------
 PeerOrgs:
 - Name: Org1
   Domain: org1.first-app.com
@@ -31,12 +19,6 @@ PeerOrgs:
     Count: 1
 - Name: Org3
   Domain: org3.first-app.com
-  Template:
-    Count: 1
-  Users:
-    Count: 1
-- Name: Org4
-  Domain: org4.first-app.com
   Template:
     Count: 1
   Users:
