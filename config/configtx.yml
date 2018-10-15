@@ -1,0 +1,244 @@
+################################################################################
+#
+#   Section: Organizations
+#
+#   - This section defines the different organizational identities which will
+#   be referenced later in the configuration.
+#
+################################################################################
+Organizations:
+- &OrdererOrg
+  Name: OrdererOrg
+  ID: OrdererMSP
+  MSPDir: /app/input/crypto-config/ordererOrganizations/first-app.com/msp
+  # Policies defines the set of policies at this level of the config tree
+  # For organization policies, their canonical path is usually
+  #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('OrdererMSP.member')"
+    Writers:
+      Type: Signature
+      Rule: "OR('OrdererMSP.member')"
+    Admins:
+      Type: Signature
+      Rule: "OR('OrdererMSP.admin')"
+
+- &Org1
+  Name: Org1MSP
+  ID: Org1MSP
+  MSPDir: /app/input/crypto-config/peerOrganizations/org1.first-app.com/msp
+  # Policies defines the set of policies at this level of the config tree
+  # For organization policies, their canonical path is usually
+  #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+    Writers:
+      Type: Signature
+      Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
+    Admins:
+      Type: Signature
+      Rule: "OR('Org1MSP.admin')"
+  AnchorPeers:
+  - Host: peer0.org1.first-app.com
+    Port: 7051
+
+- &Org2
+  Name: Org2MSP
+  ID: Org2MSP
+  MSPDir: /app/input/crypto-config/peerOrganizations/org2.first-app.com/msp
+  # Policies defines the set of policies at this level of the config tree
+  # For organization policies, their canonical path is usually
+  #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')"
+    Writers:
+      Type: Signature
+      Rule: "OR('Org2MSP.admin', 'Org2MSP.client')"
+    Admins:
+      Type: Signature
+      Rule: "OR('Org2MSP.admin')"
+  AnchorPeers:
+  - Host: peer0.org2.first-app.com
+    Port: 7051
+
+- &Org3
+  Name: Org3MSP
+  ID: Org3MSP
+  MSPDir: /app/input/crypto-config/peerOrganizations/org3.first-app.com/msp
+  # Policies defines the set of policies at this level of the config tree
+  # For organization policies, their canonical path is usually
+  #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('Org3MSP.admin', 'Org3MSP.peer', 'Org3MSP.client')"
+    Writers:
+      Type: Signature
+      Rule: "OR('Org3MSP.admin', 'Org3MSP.client')"
+    Admins:
+      Type: Signature
+      Rule: "OR('Org3MSP.admin')"
+  AnchorPeers:
+  - Host: peer0.org3.first-app.com
+    Port: 7051
+
+################################################################################
+#
+#   SECTION: Capabilities
+#
+#   - This section defines the capabilities of fabric network. This is a new
+#   concept as of v1.1.0 and should not be utilized in mixed networks with
+#   v1.0.x peers and orderers.  Capabilities define features which must be
+#   present in a fabric binary for that binary to safely participate in the
+#   fabric network.  For instance, if a new MSP type is added, newer binaries
+#   might recognize and validate the signatures from this type, while older
+#   binaries without this support would be unable to validate those
+#   transactions.  This could lead to different versions of the fabric binaries
+#   having different world states.  Instead, defining a capability for a channel
+#   informs those binaries without this capability that they must cease
+#   processing transactions until they have been upgraded.  For v1.0.x if any
+#   capabilities are defined (including a map with all capabilities turned off)
+#   then the v1.0.x peer will deliberately crash.
+#
+################################################################################
+Capabilities:
+  # Channel capabilities apply to both the orderers and the peers and must be
+  # supported by both.
+  # Set the value of the capability to true to require it.
+  Channel: &ChannelCapabilities
+    # V1.3 for Channel is a catchall flag for behavior which has been
+    # determined to be desired for all orderers and peers running at the v1.3.x
+    # level, but which would be incompatible with orderers and peers from
+    # prior releases.
+    # Prior to enabling V1.3 channel capabilities, ensure that all
+    # orderers and peers on a channel are at v1.3.0 or later.
+    V1_3: true
+
+Orderer: &OrdererDefaults
+  OrdererType: solo
+  Addresses:
+  - orderer.first-app.com
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Kafka:
+    Brokers:
+    - 127.0.0.1:9092
+  Organizations:
+  # Policies defines the set of policies at this level of the config tree
+  # For Orderer policies, their canonical path is
+  #   /Channel/Orderer/<PolicyName>
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    # BlockValidation specifies what signatures must be included in the block
+    # from the orderer for the peer to validate it.
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+################################################################################
+#
+#   SECTION: Application
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for application related parameters
+#
+################################################################################
+Application: &ApplicationDefaults
+
+  # Organizations is the list of orgs which are defined as participants on
+  # the application side of the network
+  Organizations:
+
+  # Policies defines the set of policies at this level of the config tree
+  # For Application policies, their canonical path is
+  #   /Channel/Application/<PolicyName>
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+################################################################################
+#
+#   CHANNEL
+#
+#   This section defines the values to encode into a config transaction or
+#   genesis block for channel related parameters.
+#
+################################################################################
+Channel: &ChannelDefaults
+  # Policies defines the set of policies at this level of the config tree
+  # For Channel policies, their canonical path is
+  #   /Channel/<PolicyName>
+  Policies:
+    # Who may invoke the 'Deliver' API
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    # Who may invoke the 'Broadcast' API
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    # By default, who may modify elements at this config level
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  # Capabilities describes the channel level capabilities, see the
+  # dedicated Capabilities section elsewhere in this file for a full
+  # description
+  Capabilities:
+    <<: *ChannelCapabilities
+
+################################################################################
+#
+#   Profile
+#
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#
+################################################################################
+Profiles:
+  ThreeOrgsOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+      - *OrdererOrg
+    Consortiums:
+      SampleConsortium:
+        Organizations:
+        - *Org1
+        - *Org2
+        - *Org3
+
+  ThreeOrgsChannel:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+      - *Org1
+      - *Org2
+      - *Org3

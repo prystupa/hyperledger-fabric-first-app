@@ -2,7 +2,7 @@
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )"
 
-[ -d $ROOT_DIR/.volumes ] && rm -rf $ROOT_DIR/.volumes
+[ -d $ROOT_DIR/.volumes/crypto-config ] && rm -rf $ROOT_DIR/.volumes/crypto-config
 mkdir -p ./volumes/crypto-config
 
 docker container run --rm \
