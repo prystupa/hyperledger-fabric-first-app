@@ -11,5 +11,9 @@ This command runs cryptogen to generate keys and stores them on your local drive
 ```sh
 hyperledger-fabric-first-app $ ./scripts/02-generate-channel-config.sh
 ```
-This command runs configtxgen (twice) to generate orderer genesis block and channel creation transaction
+This command runs configtxgen (5 times) to generate:
+- orderer genesis block
+- channel creation transaction 
+- anchor peer update transactions (one for each organization)
+
 and stores them on your local drive in .volumes/channel-config.
