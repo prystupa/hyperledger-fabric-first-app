@@ -40,3 +40,37 @@ services:
     - ./.volumes/crypto-config/peerOrganizations/org1.first-app.com/peers/peer0.org1.first-app.com/tls:/etc/hyperledger/fabric/tls
     networks:
     - first-app.com
+
+  peer0.org2.first-app.com:
+    container_name: peer0.org2.first-app.com
+    image: hyperledger/fabric-peer
+    environment:
+    - CORE_PEER_ID=peer0.org2.first-app.com
+    - CORE_PEER_ADDRESS=peer0.org2.first-app.com:7051
+    - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.first-app.com:7051
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.first.com:7051
+    - CORE_PEER_LOCALMSPID=Org2MSP
+    # enabled TLS
+    - CORE_PEER_TLS_ENABLED=true
+    volumes:
+    - ./.volumes/crypto-config/peerOrganizations/org2.first-app.com/peers/peer0.org2.first-app.com/msp:/etc/hyperledger/fabric/msp
+    - ./.volumes/crypto-config/peerOrganizations/org2.first-app.com/peers/peer0.org2.first-app.com/tls:/etc/hyperledger/fabric/tls
+    networks:
+    - first-app.com
+
+  peer0.org3.first-app.com:
+    container_name: peer0.org3.first-app.com
+    image: hyperledger/fabric-peer
+    environment:
+    - CORE_PEER_ID=peer0.org3.first-app.com
+    - CORE_PEER_ADDRESS=peer0.org3.first-app.com:7051
+    - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org3.first-app.com:7051
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org3.first.com:7051
+    - CORE_PEER_LOCALMSPID=Org3MSP
+    # enabled TLS
+    - CORE_PEER_TLS_ENABLED=true
+    volumes:
+    - ./.volumes/crypto-config/peerOrganizations/org3.first-app.com/peers/peer0.org3.first-app.com/msp:/etc/hyperledger/fabric/msp
+    - ./.volumes/crypto-config/peerOrganizations/org3.first-app.com/peers/peer0.org3.first-app.com/tls:/etc/hyperledger/fabric/tls
+    networks:
+    - first-app.com
