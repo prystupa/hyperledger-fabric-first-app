@@ -74,3 +74,17 @@ services:
     - ./.volumes/crypto-config/peerOrganizations/org3.first-app.com/peers/peer0.org3.first-app.com/tls:/etc/hyperledger/fabric/tls
     networks:
     - first-app.com
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools
+    tty: true
+    stdin_open: true
+    environment:
+    - CORE_PEER_ID=cli
+    # enabled TLS
+    - CORE_PEER_TLS_ENABLED=true
+    volumes:
+    - ./.volumes:/app/volumes
+    networks:
+    - first-app.com
