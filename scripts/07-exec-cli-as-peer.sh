@@ -17,21 +17,4 @@ function runPeerCommand() {
     /bin/bash -c "$command" || echo "Failed"
 }
 
-
-echo "Getting status for peer0@org1"
-runPeerCommand "peer0" "org1.first-app.com" "Org1MSP" "peer node status"
-
-echo "Getting status for peer0@org2"
-runPeerCommand "peer0" "org2.first-app.com" "Org2MSP" "peer node status"
-
-echo "Getting status for peer0@org3"
-runPeerCommand "peer0" "org3.first-app.com" "Org3MSP" "peer node status"
-
-echo "Listing channels for peer0@org1"
-runPeerCommand "peer0" "org1.first-app.com" "Org1MSP" "peer channel list"
-
-echo "Listing channels for peer0@org2"
-runPeerCommand "peer0" "org2.first-app.com" "Org2MSP" "peer channel list"
-
-echo "Listing channels for peer0@org3"
-runPeerCommand "peer0" "org3.first-app.com" "Org3MSP" "peer channel list"
+runPeerCommand "$1" "$2" "$3" "$4"
