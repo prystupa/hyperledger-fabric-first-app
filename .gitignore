@@ -4,3 +4,5 @@
 # volumes for moving information in and out of Docker containers
 .volumes
 
+# node
+node_modules/

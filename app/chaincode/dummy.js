@@ -2,12 +2,14 @@ const shim = require('fabric-shim');
 
 class Chaincode {
 
-    Init(stub) {
-
+    Init(/*stub*/) {
+        console.log('Dummy chaincode initialized!');
+        return shim.success();
     }
 
-    Invoke(stub) {
-
+    Invoke(/*stub*/) {
+        console.log('Dummy chaincode invoked!');
+        return shim.success();
     }
 }
 
